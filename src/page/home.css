@@ -1,0 +1,16 @@
+.body__home {
+  min-width: 1440px;
+  font-family: 'Space Grotesk', sans-serif;
+  min-height: 900px;
+  height: 100%;
+  border: solid 1px red;
+  background-image: url("/public/images/bg-main-desktop.png");
+  background-repeat: no-repeat;
+}
+
+@media only screen and (max-width: 375px) {
+  .body__home {
+    min-width: 375px;
+    font-family: 'Space Grotesk', sans-serif;;
+  }
+}
