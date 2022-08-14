@@ -4,8 +4,13 @@
   min-height: 900px;
   height: 100%;
   border: solid 1px red;
-  background-image: url("/public/images/bg-main-desktop.png");
+  background-image: url("/images/bg-main-desktop.png");
   background-repeat: no-repeat;
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button{
+  -webkit-appearance: none;
+  margin: 0;
 }
 
 @media only screen and (max-width: 375px) {

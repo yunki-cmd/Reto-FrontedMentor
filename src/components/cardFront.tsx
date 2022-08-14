@@ -8,7 +8,7 @@ interface props {
 export default function CardFront({style, className}: props) {
   return (
     <>
-      <div className={`h-56 w-[440px] bg-[url('/public/images/bg-card-front.png')] rounded-lg shadom ${className}`} style={style}>
+      <div className={`h-56 w-[440px] bg-[url('/images/bg-card-front.png')] rounded-lg shadom ${className}`} style={style}>
         <div className="flex flex-row transform translate-x-8 translate-y-6">
           <span className="w-10 h-10 bg-white rounded-[50%]"></span>
           <span className="w-4 h-4 border rounded-[50%] transform translate-x-3 translate-y-3"></span>
