@@ -1,61 +1,89 @@
 import CardFront from "../components/cardFront"
 import CardBack from "../components/cardBack"
 import "./home.css"
-import { useEffect, useState } from "react"
+import { useState } from "react"
+
+
+
+interface typeError{
+  type: string
+  message: string | ''
+}
+
+interface valorInput {
+  valor: string,
+  error: typeError
+}
 
 interface formData {
-  name: string,
-  number: string,
-  date: string,
-  cvc: string
+  name: valorInput,
+  number: valorInput,
+  date: valorInput,
+  cvc: valorInput
+}
+
+const TypeErrorMessage = {
+  vacio: "vacio",
+  NumberFormat: "Wrong format, numbers only"
 }
 
 
 export default function Home() {
 
   const [formData, setFormData] = useState<formData>({
-    name: '',
-    number: '',
-    date: '00/00',
-    cvc:'123'
+    name: { valor: "", error: {type:"",message:''}},
+    number: { valor: "", error: { type:"",message: '' }},
+    date: { valor: "", error: { type: "",message: '' }},
+    cvc: { valor: "", error: { type:"", message: '' }} 
+
   })
 
   const [confirm, setConfirm] = useState<Boolean>(false)
-  const [errorNumber, setErrorNumber] = useState<Boolean>(false)
 
 
   const handlerMaskNumber = (e: React.ChangeEvent<HTMLInputElement>) => {
     let value = e.target.value
-    let pos = [3,7,11,15]
-    let markNumber:string = value
-    for (let index = 0; index < pos.length; index++) {
-      if(value.length > pos[index]){
-        markNumber = markNumber.concat(value)
-      }      
+
+    let regex = /[a-zA-Z]/
+    let type = ""
+    let message= ""
+    if (regex.test(value)) {
+      type = "NumberFormat"
+      message = TypeErrorMessage.NumberFormat
+
+    } else if (value === "") {
+      type = "vacio"
+      message = TypeErrorMessage.vacio
+    } else {
+      var v = value.replace(/\s+/g, '').replace(/[^0-9]/gi, '')
+      var matches = v.match(/\d{4,16}/g);
+      var match = matches && matches[0] || ''
+      var parts = []
+
+      for (let i = 0, len = match.length; i < len; i += 4) {
+        parts.push(match.substring(i, i + 4))
+      }
+
+      if (parts.length > 0) {
+        value = parts.join(' ')
+      }
+
     }
     setFormData(prev => {
       return {
         ...prev,
-        number: value
+        number: { valor: value, error: { type, message}} 
       }
     })
   }
 
   const handlerSubmit = (e:React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
-    setConfirm(!confirm)
-  }
-
-  useEffect(()=> {
-    let regex = /[a-zA-Z]/
-    if(regex.test(formData.number) && formData.number.length >= 1){
-      if(errorNumber !== true){
-        setErrorNumber(true)
-      }
-    }else {
-      setErrorNumber(false)
+    console.log(formData.number.error.type)
+    if (formData.number.error.type === "") { 
+      setConfirm(!confirm)
     }
-  },[formData.number])
+  }
 
 
   return (
@@ -76,8 +104,8 @@ export default function Home() {
             <label htmlFor="cardNumber" className="text-[#600594] text-[14px] uppercase">
               Card Number
             </label>
-            <input onChange={handlerMaskNumber}  value={formData.number}name="cardNumber" id="cardNumber" type="text" placeholder="e.g. 1234 5678 9123 0000" className={`rounded-md border-2 p-2 font-medium focus:outline-none focus:ring-2 focus:border-transparent capitalize ${errorNumber ? 'border-[#ff5252] focus:ring-[#ff5252]' : 'border-[hsl(249, 99%, 64%)] focus:ring-[#600594]' }`} />
-            {errorNumber && <span className="mt-3 text-red-600">Wrong format, numbers only</span>}
+            <input onChange={handlerMaskNumber}  value={formData.number.valor} name="cardNumber" id="cardNumber" type="text" placeholder="e.g. 1234 5678 9123 0000" className={`rounded-md border-2 p-2 font-medium focus:outline-none focus:ring-2 focus:border-transparent capitalize ${formData.number.error.type !== '' ? 'border-[#ff5252] focus:ring-[#ff5252]' : 'border-[hsl(249, 99%, 64%)] focus:ring-[#600594]' }`} />
+            {formData.number.error.type !== '' && <span className="mt-3 text-red-600">{formData.number.error.message}</span>}
           </div>
           <div className="flex flex-row w-full my-3">
             <div className="w-2/4">
