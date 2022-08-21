@@ -4,7 +4,7 @@ function App() {
 
 
   return (
-    <div className="flex justify-center items-center">
+    <div className="sm:flex-row  flex justify-center items-center">
       <Home />
     </div>
   )

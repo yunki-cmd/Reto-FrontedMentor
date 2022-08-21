@@ -3,7 +3,6 @@
   font-family: 'Space Grotesk', sans-serif;
   min-height: 900px;
   height: 100%;
-  border: solid 1px red;
   background-image: url("/images/bg-main-desktop.png");
   background-repeat: no-repeat;
 }
